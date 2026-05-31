@@ -7,8 +7,7 @@
 FlashcardApp::FlashcardApp() :
     win(sf::VideoMode(W, H), "Flashcards", sf::Style::Titlebar | sf::Style::Close),
     screen(MENU), cardN(0), deckN(0), deckI(0), correct(0), missedN(0),
-    focusW(true), cursor(true), flipped(false)
-{
+    focusW(true), cursor(true), flipped(false){
     std::srand(static_cast<unsigned>(std::time(nullptr)));
     win.setFramerateLimit(60);
 
@@ -24,7 +23,7 @@ FlashcardApp::FlashcardApp() :
     GRAY = sf::Color(50, 55, 80);
     TXT = sf::Color(230, 235, 255);
     MUTED = sf::Color(140, 150, 190);
-}
+    }
 
 bool FlashcardApp::initAndRun() {
     #ifdef _WIN32
