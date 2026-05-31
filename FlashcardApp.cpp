@@ -168,6 +168,14 @@ void FlashcardApp::drawAddScreen(sf::Vector2i mouse) {
     win.draw(txt(td, 22, TXT, 182, 320));
 
     drawBtn("Добавить", 270, 400, 260, 50, BLUE, mouse);
+    char lb[32]; snprintf(lb,32,"Добавлено (%d):",cardN);
+            win.draw(txt(lb,16,MUTED,170,470));
+            int n=cardN<3?cardN:3;
+            for(int i=0;i<n;i++){
+                char line[MWORD*2+8];
+                snprintf(line,sizeof(line),"%d. %s -> %s",cardN-i,cards[cardN-1-i].w,cards[cardN-1-i].t);
+                win.draw(txt(line,14,MUTED,170,494+i*20.f));
+            }
 }
 
 void FlashcardApp::drawTestScreen(sf::Vector2i mouse) {
