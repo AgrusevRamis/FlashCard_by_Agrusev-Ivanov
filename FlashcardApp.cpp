@@ -50,7 +50,12 @@ void FlashcardApp::processEvents() {
         if (e.type == sf::Event::Closed) win.close();
 
         if (screen == MENU) {
-            if (clicked(e, 200, 310, 180, 50)) {
+            if (cardN == 0 && clicked(e, 300, 270, 180, 50)){
+                wBuf[0] = tBuf[0] = '\0';
+                focusW = true;
+                screen = ADD;
+            }
+            if (clicked(e, 200, 310, 180, 50) && cardN > 0) {
                 wBuf[0] = tBuf[0] = '\0';
                 focusW = true;
                 screen = ADD;
@@ -132,9 +137,13 @@ void FlashcardApp::drawMenuScreen(sf::Vector2i mouse) {
     char buf[64];
     std::snprintf(buf, 64, "Карточек: %d", cardN);
     drawCentered(buf, 22, MUTED, 190);
-    drawBtn("Добавить слово", 200, 310, 180, 50, BLUE, mouse);
-    if (cardN > 0) drawBtn("Начать тест", 420, 310, 180, 50, BLUE, mouse);
-    else drawCentered("Добавьте слова для теста", 16, RED, 378);
+    if (cardN==0){drawBtn("Добавить слово", 300, 270, 180, 50, BLUE, mouse);
+    }
+    else{
+        drawBtn("Добавить слово", 200, 310, 180, 50, BLUE, mouse);
+        drawBtn("Начать тест", 420, 310, 180, 50, BLUE, mouse);
+    }
+    if (cardN == 0) drawCentered("Добавьте слова для теста", 16, RED, 378);
 }
 
 void FlashcardApp::drawAddScreen(sf::Vector2i mouse) {
