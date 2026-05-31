@@ -97,8 +97,8 @@ void FlashcardApp::processEvents() {
             if (!flipped && clicked(e, 300, 460, 200, 50)) flipped = true;
             if (flipped) {
                 bool act = false;
-                if (clicked(e, 460, 460, 160, 50)) { correct++; act = true; }
-                if (clicked(e, 180, 460, 160, 50)) { missed[missedN++] = deck[deckI]; act = true; }
+                if (clicked(e, 540, 460, 160, 50)) { correct++; act = true; }
+                if (clicked(e, 100, 460, 160, 50)) { missed[missedN++] = deck[deckI]; act = true; }
                 if (act) {
                     deckI++;
                     if (deckI >= deckN) screen = RESULT;
