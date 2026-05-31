@@ -1,0 +1,3 @@
+/home/serramis1/PROJECT/build/CMakeFiles/Flashcards.dir
+/home/serramis1/PROJECT/build/CMakeFiles/edit_cache.dir
+/home/serramis1/PROJECT/build/CMakeFiles/rebuild_cache.dir

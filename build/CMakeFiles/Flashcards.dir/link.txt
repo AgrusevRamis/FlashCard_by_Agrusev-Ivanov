@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/Flashcards.dir/main.cpp.o CMakeFiles/Flashcards.dir/FlashcardApp.cpp.o -o Flashcards  /usr/lib/x86_64-linux-gnu/libsfml-graphics.so.2.6.1 /usr/lib/x86_64-linux-gnu/libsfml-window.so.2.6.1 /usr/lib/x86_64-linux-gnu/libsfml-system.so.2.6.1 
