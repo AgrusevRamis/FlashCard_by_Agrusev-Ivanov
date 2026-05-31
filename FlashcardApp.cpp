@@ -179,8 +179,8 @@ void FlashcardApp::drawTestScreen(sf::Vector2i mouse) {
 
     if (!flipped) drawBtn("Перевернуть", 300, 460, 200, 50, BLUE, mouse);
     else {
-        drawBtn("Не знал", 180, 460, 160, 50, RED, mouse);
-        drawBtn("Знал!", 460, 460, 160, 50, GREEN, mouse);
+        drawBtn("Не знал",100, 460, 160, 50, RED, mouse);
+        drawBtn("Знал!", 540, 460, 160, 50, GREEN, mouse);
     }
 }
 
