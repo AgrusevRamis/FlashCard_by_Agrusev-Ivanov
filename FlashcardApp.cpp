@@ -7,7 +7,7 @@
 FlashcardApp::FlashcardApp() :
     win(sf::VideoMode(W, H), "Flashcards", sf::Style::Titlebar | sf::Style::Close),
     screen(MENU), cardN(0), deckN(0), deckI(0), correct(0), missedN(0),
-    focusW(true), cursor(true), flipped(false){
+    focusW(true), cursor(true), flipped(false),fileError(false){
     std::srand(static_cast<unsigned>(std::time(nullptr)));
     win.setFramerateLimit(60);
 
@@ -40,6 +40,45 @@ bool FlashcardApp::initAndRun() {
         render();
     }
     return true;
+}
+
+bool FlashcardApp::loadFromFile(const char* path) {
+    FILE* f = std::fopen(path, "r");
+    if (!f) return false;
+
+    char line[MWORD * 2 + 8];
+    int loaded = 0;
+    while (std::fgets(line, sizeof(line), f) && cardN < MAX) {
+        int len = std::strlen(line);
+        while (len > 0 && (line[len-1] == '\n' || line[len-1] == '\r'))
+            line[--len] = '\0';
+        if (len == 0) continue;
+
+        char* sep = std::strchr(line, '\t');
+        if (!sep) sep = std::strchr(line, ';');
+        if (!sep) continue;
+
+        *sep = '\0';
+        const char* word  = line;
+        const char* trans = sep + 1;
+        if (*word == '\0' || *trans == '\0') continue;
+
+        std::strncpy(cards[cardN].w, word,  MWORD - 1);
+        std::strncpy(cards[cardN].t, trans, MWORD - 1);
+        cards[cardN].w[MWORD-1] = cards[cardN].t[MWORD-1] = '\0';
+        cardN++;
+        loaded++;
+    }
+    std::fclose(f);
+    return loaded > 0;
+}
+
+void FlashcardApp::saveToFile(const char* path) {
+    FILE* f = std::fopen(path, "w");
+    if (!f) return;
+    for (int i = 0; i < cardN; i++)
+        std::fprintf(f, "%s\t%s\n", cards[i].w, cards[i].t);
+    std::fclose(f);
 }
 
 void FlashcardApp::processEvents() {
@@ -97,6 +136,8 @@ void FlashcardApp::processEvents() {
             if (!flipped && clicked(e, 300, 460, 200, 50)) flipped = true;
             if (flipped) {
                 bool act = false;
+                if (clicked(e, 460, 460, 160, 50)) { correct++; act = true; }
+                if (clicked(e, 180, 460, 160, 50)) { missed[missedN++] = deck[deckI]; act = true; }
                 if (clicked(e, 540, 460, 160, 50)) { correct++; act = true; }
                 if (clicked(e, 100, 460, 160, 50)) { missed[missedN++] = deck[deckI]; act = true; }
                 if (act) {
