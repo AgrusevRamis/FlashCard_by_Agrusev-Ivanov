@@ -319,6 +319,17 @@ void FlashcardApp::addUtf8(char* buf, uint32_t code) {
     else { buf[len] = 0xE0 | (code >> 12); buf[len + 1] = 0x80 | ((code >> 6) & 0x3F); buf[len + 2] = 0x80 | (code & 0x3F); buf[len + 3] = 0; }
 }
 
+void FlashcardApp::popUtf8(char* buf) {
+    int l = std::strlen(buf);
+    if (l == 0) return;
+    while (l > 0) {
+        l--;
+        char c = buf[l];
+        buf[l] = '\0';
+        if ((c & 0xC0) != 0x80) break;
+    }
+}
+
 void FlashcardApp::shuffle(Card* a, int n) {
     for (int i = n - 1; i > 0; i--) {
         int j = std::rand() % (i + 1);
