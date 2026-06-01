@@ -49,6 +49,7 @@ bool FlashcardApp::initAndRun() {
 
     return true;
 }
+
 bool FlashcardApp::loadFromFile(const char* path) {
     FILE* f = std::fopen(path, "r");
     if (!f) return false;
@@ -99,28 +100,23 @@ void FlashcardApp::processEvents() {
         auto mouse = sf::Mouse::getPosition(win);
 
         if (screen == MENU) {
-            if (cardN == 0) {
-                if (clicked(e, 310, 275, 180, 50)) {
-                    fileBuf[0] = '\0';
-                    screen = FILE_LOAD;
-                }
-            } else {
-                if (clicked(e, 310, 200, 180, 50)) {
-                    fileBuf[0] = '\0';
-                    screen = FILE_LOAD;
-                }
-                if (clicked(e, 200, 280, 180, 50)) {
-                    wBuf[0] = tBuf[0] = '\0';
-                    focusW = true;
-                    screen = ADD;
-                }
-                if (clicked(e, 420, 280, 180, 50)) {
+            if (clicked(e, 200, 240, 180, 50)) {
+                fileBuf[0] = '\0';
+                screen = FILE_LOAD;
+            }
+            if (clicked(e, 420, 240, 180, 50)) {
+                wBuf[0] = tBuf[0] = '\0';
+                focusW = true;
+                screen = ADD;
+            }
+            if (cardN > 0) {
+                if (clicked(e, 200, 320, 180, 50)) {
                     for (int i = 0; i < cardN; i++) deck[i] = cards[i];
                     deckN = cardN; deckI = 0; correct = 0; missedN = 0; flipped = false;
                     shuffle(deck, deckN);
                     screen = TEST;
                 }
-                if (clicked(e, 310, 360, 180, 50)) {
+                if (clicked(e, 420, 320, 180, 50)) {
                     editIdx = -1;
                     editListOffset = 0;
                     screen = EDIT_LIST;
@@ -129,7 +125,12 @@ void FlashcardApp::processEvents() {
         }
 
         else if (screen == FILE_LOAD) {
-                 if (clicked(e, 270, 330, 260, 50)) {
+            if (clicked(e, 50, 30, 120, 40)) {
+                fileError = false;
+                screen = MENU;
+            }
+
+            if (clicked(e, 270, 330, 260, 50)) {
                 if (fileBuf[0]) {
                     if (loadFromFile(fileBuf)) {
                         fileError = false;
@@ -295,14 +296,14 @@ void FlashcardApp::drawMenuScreen(sf::Vector2i mouse) {
         drawCentered(fb, 15, MUTED, 155);
     }
 
-    if (cardN == 0) {
-        drawBtn("Загрузить из файла", 310, 275, 180, 50, BLUE, mouse);
-        drawCentered("Нажмите кнопку, чтобы загрузить слова", 16, MUTED, 340);
+    drawBtn("Загрузить из файла", 200, 240, 180, 50, BLUE, mouse);
+    drawBtn("Добавить слово",     420, 240, 180, 50, BLUE, mouse);
+
+    if (cardN > 0) {
+        drawBtn("Начать тест",   200, 320, 180, 50, GREEN,                  mouse);
+        drawBtn("Редактировать", 420, 320, 180, 50, sf::Color(90, 60, 140), mouse);
     } else {
-        drawBtn("Загрузить из файла", 310, 200, 180, 50, BLUE, mouse);
-        drawBtn("Добавить слово",     200, 280, 180, 50, BLUE, mouse);
-        drawBtn("Начать тест",        420, 280, 180, 50, GREEN, mouse);
-        drawBtn("Редактировать",      310, 360, 180, 50, sf::Color(90, 60, 140), mouse);
+        drawCentered("Загрузите файл или добавьте слова вручную", 16, MUTED, 390);
     }
 }
 
