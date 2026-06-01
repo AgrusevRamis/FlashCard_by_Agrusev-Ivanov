@@ -1,9 +1,8 @@
 #include "FlashcardApp.h"
 
 int main() {
-    FlashcardApp app;
-    if (!app.initAndRun()) {
-        return 1;
-    }
+    FlashcardApp* app = new FlashcardApp();
+    app->initAndRun();
+    delete app;
     return 0;
 }

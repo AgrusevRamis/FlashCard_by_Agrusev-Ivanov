@@ -1,0 +1,500 @@
+I	я
+you	ты / вы
+he	он
+she	она
+it	оно / это
+we	мы
+they	они
+me	мне / меня
+him	его / ему
+her	её / ей
+us	нам / нас
+them	их / им
+my	мой / моя / моё
+your	твой / ваш
+his	его (чей?)
+her	её (чья?)
+its	его / её (для неодуш.)
+our	наш
+their	их (чей?)
+this	этот / эта / это
+that	тот / та / то
+these	эти
+those	те
+who	кто
+what	что / какой
+where	где / куда
+when	когда
+why	почему / зачем
+how	как
+whose	чей
+one	один
+two	два
+three	три
+four	четыре
+five	пять
+six	шесть
+seven	семь
+eight	восемь
+nine	девять
+ten	десять
+eleven	одиннадцать
+twelve	двенадцать
+thirteen	тринадцать
+fourteen	четырнадцать
+fifteen	пятнадцать
+sixteen	шестнадцать
+seventeen	семнадцать
+eighteen	восемнадцать
+nineteen	девятнадцать
+twenty	двадцать
+thirty	тридцать
+forty	сорок
+fifty	пятьдесят
+sixty	шестьдесят
+seventy	семьдесят
+eighty	восемьдесят
+ninety	девяносто
+hundred	сто
+thousand	тысяча
+first	первый
+second	второй
+third	третий
+fourth	четвертый
+fifth	пятый
+time	время / раз
+year	год
+month	месяц
+week	неделя
+day	день
+hour	час
+minute	минута
+second	секунда
+morning	утро
+afternoon	день (после полудня)
+evening	вечер
+night	ночь
+today	сегодня
+yesterday	вчера
+tomorrow	завтра
+now	сейчас
+then	тогда / потом
+always	всегда
+usually	обычно
+often	часто
+sometimes	иногда
+never	никогда
+before	до / перед
+after	после
+early	ранний / рано
+late	поздний / поздно
+clock	часы (настенные)
+watch	часы (наручные)
+calendar	календарь
+date	дата
+weekend	выходные
+Monday	понедельник
+Tuesday	вторник
+Wednesday	среда
+Thursday	четверг
+Friday	пятница
+Saturday	суббота
+Sunday	воскресенье
+family	семья
+people	люди
+person	человек
+man	мужчина
+woman	женщина
+child	ребенок
+children	дети
+boy	мальчик
+girl	девочка
+father	отец
+mother	мать
+parent	родитель
+dad	папа
+mum	мама
+son	сын
+daughter	дочь
+brother	брат
+sister	сестра
+husband	муж
+wife	жена
+friend	друг
+baby	младенец
+grandfather	дедушка
+grandmother	бабушка
+grandparents	дедушка и бабушка
+grandson	внук
+granddaughter	внучка
+uncle	дядя
+aunt	тетя
+cousin	двоюродный брат / сестра
+name	имя
+surname	фамилия
+age	возраст
+boy-friend	парень (возлюбленный)
+girl-friend	девушка (возлюбленная)
+neighbor	сосед
+guest	гость
+king	король
+queen	королева
+sir	сэр
+madam	мадам
+team	команда
+group	группа
+crowd	толпа
+classmate	одноклассник
+adult	взрослый
+teenager	подросток
+partner	партнер
+boss	босс / начальник
+staff	персонал / штат
+food	еда
+drink	напиток / пить
+water	вода
+tea	чай
+coffee	кофе
+milk	молоко
+juice	сок
+bread	хлеб
+butter	сливочное масло
+cheese	сыр
+meat	мясо
+chicken	курица
+fish	рыба
+egg	яйцо
+rice	рис
+pasta	паста / макароны
+soup	суп
+salad	салат
+vegetable	овощ
+fruit	фрукт
+apple	яблоко
+banana	банан
+orange	апельсин
+lemon	лимон
+tomato	помидор
+potato	картофель
+onion	лук
+carrot	морковь
+sugar	сахар
+salt	соль
+pepper	перец
+oil	масло (растительное)
+cake	торт / пирожное
+biscuit	печенье
+chocolate	шоколад
+ice-cream	мороженое
+sweet	конфета / сладкий
+breakfast	завтрак
+lunch	обед
+dinner	ужин
+apple-juice	яблочный сок
+beef	говядина
+pork	свинина
+sausage	колбаса / сосиска
+ham	ветчина
+garlic	чеснок
+cucumber	огурец
+grape	виноград
+strawberry	клубника
+strawberry-jam	клубничное варенье
+honey	мёд
+beer	пиво
+wine	вино
+menu	меню
+bill	счет (в ресторане)
+waiter	официант
+restaurant	ресторан
+cafe	кафе
+kitchen	кухня
+cook	повар / готовить
+hungry	голодный
+thirsty	испытывающий жажду
+delicious	очень вкусный
+sweet	сладкий
+sour	кислый
+bitter	горький
+hot	горячий / острый
+cold	холодный
+fresh	свежий
+raw	сырой
+fried	жареный
+boiled	вареный
+baked	печеный
+spoon	ложка
+fork	вилка
+knife	нож
+plate	тарелка
+glass	стакан / стекло
+cup	чашка
+bottle	бутылка
+home	дом (место жительства)
+house	дом (здание)
+room	комната
+bedroom	спальня
+bathroom	ванная комната
+living-room	гостиная
+toilet	туалет
+door	дверь
+window	окно
+wall	стена
+floor	пол / этаж
+roof	крыша
+garden	сад
+garage	гараж
+key	ключ
+bed	кровать
+table	стол
+chair	стул
+armchair	кресло
+sofa	диван
+wardrobe	шкаф для одежды
+shelf	полка
+mirror	зеркало
+lamp	лампа
+carpet	ковер
+curtain	штора
+pillow	подушка
+blanket	одеяло
+towel	полотенце
+soap	мыло
+shampoo	шампунь
+toothbrush	зубная щетка
+toothpaste	зубная паста
+sink	раковина
+shower	душ
+bath	ванна
+fridge	холодильник
+cooker	плита
+oven	духовка
+washing-machine	стиральная машина
+tv	телевизор
+radio	радио
+computer	компьютер
+telephone	телефон
+clock	часы
+picture	картина / фото
+box	коробка
+bag	сумка
+suitcase	чемодан
+trash	мусор
+clean	чистый / чистить
+dirty	грязный
+open	открытый / открывать
+close	закрытый / закрывать
+rent	аренда / арендовать
+address	адрес
+street	улица
+floor	этаж
+stair	ступенька / лестница
+balcony	балкон
+gate	ворота
+fence	забор
+yard	двор
+heating	отопление
+electricity	электричество
+light	свет / легкий
+dark	темный / темнота
+bell	звонок / колокольчик
+lock	замок
+animal	животное
+dog	собака
+cat	кошка
+bird	птица
+horse	лошадь
+cow	корова
+pig	свинья
+sheep	овца
+duck	утка
+mouse	мышь
+elephant	слон
+lion	лев
+tiger	тигр
+bear	медведь
+monkey	обезьяна
+rabbit	кролик
+snake	змея
+frog	лягушка
+spider	паук
+fly	муха / летать
+bee	пчела
+butterfly	бабочка
+pet	домашнее животное
+wild	дикий
+domestic	домашний (о животных)
+tail	хвост
+wing	крыло
+fur	мех / шерсть
+zoo	зоопарк
+farm	ферма
+fox	лиса
+wolf	волк
+deer	олень
+goat	коза
+donkey	осел
+parrot	попугай
+shark	акула
+whale	кит
+clothes	одежда
+shirt	рубашка
+t-shirt	футболка
+trousers	брюки / штаны
+jeans	джинсы
+skirt	юбка
+dress	платье
+coat	пальто / плащ
+jacket	куртка / пиджак
+sweater	свитер
+suit	костюм
+shoes	обувь / туфли
+boots	ботинки / сапоги
+sneakers	кроссовки
+socks	носки
+hat	шляпа / шапка
+cap	кепка
+gloves	перчатки
+scarf	шарф
+belt	ремень / пояс
+tie	галстук / завязывать
+pocket	карман
+wallet	кошелек
+umbrella	зонтик
+glasses	очки
+ring	кольцо
+necklace	ожерелье
+shop	магазин
+supermarket	супермаркет
+market	рынок
+price	цена
+money	деньги
+cash	наличные
+credit-card	кредитная карта
+cheap	дешевый
+expensive	дорогой
+buy	покупать
+sell	продавать
+pay	платить
+spend	тратить
+cost	стоить / стоимость
+sale	распродажа
+customer	покупатель / клиент
+receipt	чек / квитанция
+size	размер
+try-on	примерять
+fit	подходить по размеру
+change	сдача / менять
+body	тело
+head	голова
+face	лицо
+hair	волосы
+eye	глаз
+ear	ухо
+nose	нос
+mouth	рот
+tooth	зуб
+teeth	зубы
+neck	шея
+shoulder	плечо
+arm	рука (от плеча до кисти)
+hand	рука (кисть)
+finger	палец (на руке)
+leg	нога (вся)
+foot	нога (ступня)
+feet	ноги (ступни)
+toe	палец (на ноге)
+back	спина / назад
+heart	сердце
+blood	кровь
+health	здоровье
+healthy	здоровый
+sick	больной
+ill	больной
+pain	боль
+headache	головная боль
+doctor	врач
+nurse	медсестра / медбрат
+hospital	больница
+medicine	лекарство / медицина
+pharmacy	аптека
+cold	простуда / холодный
+flu	грипп
+cough	кашель / кашлять
+fever	жар / лихорадка
+injury	травма
+pill	таблетка
+bandage	бинт / повязка
+travel	путешествие / путешествовать
+trip	поездка
+holiday	праздник / отпуск
+vacation	отпуск / каникулы
+transport	транспорт
+car	машина
+bus	автобус
+train	поезд
+plane	самолет
+bicycle	велосипед
+bike	велосипед / мотоцикл
+motorcycle	мотоцикл
+boat	лодка
+ship	корабль
+taxi	такси
+station	станция / вокзал
+airport	аэропорт
+bus-stop	автобусная остановка
+ticket	билет
+luggage	багаж
+passport	паспорт
+hotel	отель
+room	номер / комната
+map	карта
+tourist	турист
+visit	посещать / визит
+flight	полет / рейс
+driver	водитель
+pilot	пилот
+passenger	пассажир
+drive	вести машину
+ride	ездить верхом / на велосипеде
+fly	летать
+sail	плыть под парусом
+arrive	прибывать
+leave	покидать / уходить
+return	возвращаться
+journey	путешествие (длительное)
+seat	место / сиденье
+fast	быстрый
+slow	медленный
+quick	быстрый / скорый
+traffic	дорожное движение
+road	дорога
+highway	шоссе
+bridge	мост
+gas-station	бензоколонка
+parking	парковка
+guide	гид / путеводитель
+be	быть / являться
+have	иметь
+do	делать
+say	сказать
+go	идти / ехать
+get	получать / добираться
+make	делать / создавать
+know	знать
+think	думать
+take	брать / взять
+see	видеть
+come	приходить
+want	хотеть
+use	использовать
+find	находить
+give	давать
+tell	рассказывать / говорить
+work	работать / работа
+call	звонить / звать
+try	пытаться / пробовать
+ask	спрашивать / просить
+need	нуждаться / нужно
+feel	чувствовать
+become	становиться
