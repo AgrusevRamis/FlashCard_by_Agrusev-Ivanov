@@ -1,0 +1,164 @@
+achieve	достигать
+advantage	преимущество
+affect	влиять
+agree	соглашаться
+although	хотя / несмотря на
+appear	появляться / казаться
+apply	применять / подавать заявление
+arrange	организовывать / договариваться
+attempt	попытка / пытаться
+attend	посещать / присутствовать
+avoid	избегать
+belong	принадлежать
+benefit	польза / выгода / приносить пользу
+borrow	брать взаймы
+cancel	отменять
+cause	причина / вызывать
+challenge	вызов / испытание
+change	изменение / изменять
+choice	выбор
+collect	собирать
+complain	жаловаться
+complete	завершать / полный
+condition	условие / состояние
+consider	рассматривать / считать
+continue	продолжать
+control	контроль / контролировать
+convenient	удобный
+correct	правильный / исправлять
+create	создавать
+culture	культура
+curious	любопытный
+damage	ущерб / повреждать
+decide	решать
+decrease	уменьшать / снижаться
+delay	задержка / откладывать
+deliver	доставлять
+depend	зависеть
+describe	описывать
+develop	развивать
+difference	разница / отличие
+difficult	трудный / сложный
+disappoint	разочаровывать
+discover	обнаружить / открывать
+discuss	обсуждать
+distance	расстояние
+education	образование
+environment	окружающая среда
+especially	особенно
+event	событие / мероприятие
+exam	экзамен
+example	пример
+expect	ожидать
+experience	опыт / переживать
+explain	объяснять
+fail	не сдать / провалиться
+familiar	знакомый / привычный
+finally	наконец / в итоге
+fluent	свободно владеющий языком
+follow	следовать / следить
+foreign	иностранный
+fortunately	к счастью
+frequently	часто
+general	общий / генеральный
+government	правительство
+grow	расти / выращивать
+happen	происходить / случаться
+health	здоровье
+helpful	полезный
+honest	честный
+however	однако / тем не менее
+imagine	воображать / представлять
+immediately	немедленно / сразу
+improve	улучшать
+include	включать
+increase	увеличивать / расти
+independent	независимый
+individual	личность / индивидуальный
+influence	влияние / влиять
+inform	информировать
+instead	вместо / взамен
+interest	интерес / интересовать
+international	международный
+introduce	представлять / вводить
+involve	включать / вовлекать
+join	присоединяться / вступать
+knowledge	знания / знание
+language	язык
+lately	в последнее время
+lead	вести / лидировать
+lend	одалживать
+likely	вероятный / вероятно
+limit	ограничение / ограничивать
+local	местный
+manage	справляться / управлять
+mention	упоминать
+miss	скучать / пропускать
+modern	современный
+necessary	необходимый
+offer	предложение / предлагать
+opinion	мнение
+opportunity	возможность / шанс
+organized	организованный
+otherwise	иначе / в противном случае
+own	собственный / владеть
+particular	конкретный / особый
+patience	терпение
+perhaps	возможно / наверное
+period	период / срок
+permit	разрешать / разрешение
+popular	популярный
+prepare	готовить / готовиться
+prevent	предотвращать
+produce	производить / продукты
+professional	профессиональный / специалист
+progress	прогресс / продвигаться
+promise	обещание / обещать
+provide	предоставлять / обеспечивать
+purpose	цель / намерение
+reach	достигать / дотягиваться
+realize	осознавать / понимать
+reason	причина / довод
+receive	получать
+recognize	узнавать / признавать
+recommend	рекомендовать
+refuse	отказывать
+region	регион / область
+relationship	отношения / связь
+remind	напоминать
+repeat	повторять
+replace	заменять
+require	требовать
+research	исследование / изучать
+respect	уважение / уважать
+responsible	ответственный
+result	результат
+review	обзор / проверять
+rise	подниматься / расти
+risk	риск / рисковать
+role	роль
+save	сохранять / спасать / экономить
+serious	серьёзный
+share	делиться / доля
+similar	похожий / аналогичный
+situation	ситуация
+skill	навык / умение
+society	общество
+solve	решать (задачу)
+statement	заявление / утверждение
+succeed	добиваться успеха
+suggest	предлагать / предполагать
+support	поддержка / поддерживать
+suppose	полагать / предполагать
+surprise	сюрприз / удивлять
+technology	технология
+therefore	поэтому / следовательно
+throughout	на протяжении / повсюду
+tradition	традиция
+typical	типичный
+unfortunately	к сожалению
+unless	если только не / пока не
+useful	полезный
+value	ценность / ценить
+variety	разнообразие
+various	различный / разнообразный

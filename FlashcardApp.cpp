@@ -49,8 +49,6 @@ bool FlashcardApp::initAndRun() {
 
     return true;
 }
-
-// ──────────────────────────────────────────────────────────────
 bool FlashcardApp::loadFromFile(const char* path) {
     FILE* f = std::fopen(path, "r");
     if (!f) return false;
@@ -82,7 +80,6 @@ bool FlashcardApp::loadFromFile(const char* path) {
     return loaded > 0;
 }
 
-// ──────────────────────────────────────────────────────────────
 void FlashcardApp::saveToFile(const char* path) {
     FILE* f = std::fopen(path, "w");
     if (!f) return;
@@ -91,7 +88,6 @@ void FlashcardApp::saveToFile(const char* path) {
     std::fclose(f);
 }
 
-// ──────────────────────────────────────────────────────────────
 void FlashcardApp::processEvents() {
     sf::Event e;
     while (win.pollEvent(e)) {
@@ -102,16 +98,13 @@ void FlashcardApp::processEvents() {
 
         auto mouse = sf::Mouse::getPosition(win);
 
-        // ── МЕНЮ ─────────────────────────────────────────────
         if (screen == MENU) {
             if (cardN == 0) {
-                // Если слов нет, показываем только одну кнопку загрузки по центру
                 if (clicked(e, 310, 275, 180, 50)) {
                     fileBuf[0] = '\0';
                     screen = FILE_LOAD;
                 }
             } else {
-                // Если слова есть, показываем полное меню
                 if (clicked(e, 310, 200, 180, 50)) {
                     fileBuf[0] = '\0';
                     screen = FILE_LOAD;
@@ -135,24 +128,23 @@ void FlashcardApp::processEvents() {
             }
         }
 
-        // ── ЭКРАН ВВОДА ИМЕНИ ФАЙЛА ───────────────────────────
         else if (screen == FILE_LOAD) {
-                 if (clicked(e, 270, 380, 260, 50)) {
+                 if (clicked(e, 270, 330, 260, 50)) {
                 if (fileBuf[0]) {
                     if (loadFromFile(fileBuf)) {
                         fileError = false;
                         screen = MENU;
                     } else {
-                        fileError = true; // Файл не найден
+                        fileError = true;
                     }
                 }
             }
 
             if (e.type == sf::Event::TextEntered) {
                 uint32_t c = e.text.unicode;
-                if (c == 8 || c == 127) { 
+                if (c == 8 || c == 127) {
                     popUtf8(fileBuf);
-                    fileError = false; // Сбрасываем ошибку при вводе
+                    fileError = false;
                 }
                 else if (c == '\r' || c == '\n') {
                     if (fileBuf[0]) {
@@ -160,18 +152,17 @@ void FlashcardApp::processEvents() {
                             fileError = false;
                             screen = MENU;
                         } else {
-                            fileError = true; // Файл не найден
+                            fileError = true;
                         }
                     }
                 }
                 else if (c >= 32) {
                     addUtf8(fileBuf, c, 510);
-                    fileError = false; // Сбрасываем ошибку при вводе
+                    fileError = false;
                 }
             }
         }
 
-        // ── ДОБАВИТЬ СЛОВО ────────────────────────────────────
         else if (screen == ADD) {
             if (clicked(e, 50, 30, 120, 40)) screen = MENU;
             if (clicked(e, 270, 400, 260, 50)) {
@@ -250,7 +241,6 @@ void FlashcardApp::processEvents() {
             }
         }
 
-        // ── ТЕСТ ──────────────────────────────────────────────
         else if (screen == TEST) {
             if (clicked(e, 50, 30, 120, 40)) screen = MENU;
             if (!flipped && clicked(e, 300, 460, 200, 50)) flipped = true;
@@ -266,7 +256,6 @@ void FlashcardApp::processEvents() {
             }
         }
 
-        // ── РЕЗУЛЬТАТ ─────────────────────────────────────────
         else if (screen == RESULT) {
             if (clicked(e, 190, 460, 180, 50)) screen = MENU;
             if (clicked(e, 430, 460, 180, 50)) {
@@ -279,7 +268,6 @@ void FlashcardApp::processEvents() {
     }
 }
 
-// ──────────────────────────────────────────────────────────────
 void FlashcardApp::render() {
     win.clear(BG);
     auto mouse = sf::Mouse::getPosition(win);
@@ -294,7 +282,6 @@ void FlashcardApp::render() {
     win.display();
 }
 
-// ──────────────────────────────────────────────────────────────
 void FlashcardApp::drawMenuScreen(sf::Vector2i mouse) {
     drawCentered("Flashcards", 48, ACCENT, 60);
 
@@ -309,11 +296,9 @@ void FlashcardApp::drawMenuScreen(sf::Vector2i mouse) {
     }
 
     if (cardN == 0) {
-        // До загрузки
         drawBtn("Загрузить из файла", 310, 275, 180, 50, BLUE, mouse);
         drawCentered("Нажмите кнопку, чтобы загрузить слова", 16, MUTED, 340);
     } else {
-        // После загрузки (или ручного добавления, если бы оно было доступно с начала)
         drawBtn("Загрузить из файла", 310, 200, 180, 50, BLUE, mouse);
         drawBtn("Добавить слово",     200, 280, 180, 50, BLUE, mouse);
         drawBtn("Начать тест",        420, 280, 180, 50, GREEN, mouse);
@@ -321,12 +306,11 @@ void FlashcardApp::drawMenuScreen(sf::Vector2i mouse) {
     }
 }
 
-// ──────────────────────────────────────────────────────────────
 void FlashcardApp::drawFileScreen(sf::Vector2i mouse) {
     drawBtn("< Назад", 50, 30, 120, 40, GRAY, mouse);
     drawCentered("Загрузить из файла", 34, ACCENT, 80);
 
-    win.draw(txt("Введите путь к файлу (.txt):", 18, MUTED, 170, 170));
+    win.draw(txt("Введите путь к файлу (.txt): (например, ../a1.txt)", 18, MUTED, 170, 170));
     win.draw(txt("Формат строк:  слово TAB перевод", 14, MUTED, 170, 196));
     win.draw(txt("               или:  слово;перевод", 14, MUTED, 170, 214));
 
@@ -342,7 +326,6 @@ void FlashcardApp::drawFileScreen(sf::Vector2i mouse) {
     }
 }
 
-// ──────────────────────────────────────────────────────────────
 void FlashcardApp::drawAddScreen(sf::Vector2i mouse) {
     drawBtn("< Назад", 50, 30, 120, 40, GRAY, mouse);
     drawCentered("Добавить слово", 34, ACCENT, 80);
@@ -379,7 +362,6 @@ void FlashcardApp::drawAddScreen(sf::Vector2i mouse) {
     }
 }
 
-// ──────────────────────────────────────────────────────────────
 void FlashcardApp::drawEditScreen(sf::Vector2i mouse) {
     if (editIdx < 0) {
         drawBtn("< Назад", 50, 30, 120, 40, GRAY, mouse);
@@ -449,7 +431,6 @@ void FlashcardApp::drawEditScreen(sf::Vector2i mouse) {
     }
 }
 
-// ──────────────────────────────────────────────────────────────
 void FlashcardApp::drawTestScreen(sf::Vector2i mouse) {
     drawBtn("< Назад", 50, 30, 120, 40, GRAY, mouse);
 
@@ -476,7 +457,6 @@ void FlashcardApp::drawTestScreen(sf::Vector2i mouse) {
     }
 }
 
-// ──────────────────────────────────────────────────────────────
 void FlashcardApp::drawResultScreen(sf::Vector2i mouse) {
     drawCentered("Результат", 42, ACCENT, 60);
     int pct = deckN > 0 ? correct * 100 / deckN : 0;
@@ -506,9 +486,6 @@ void FlashcardApp::drawResultScreen(sf::Vector2i mouse) {
     drawBtn("Ещё раз", 430, 460, 180, 50, BLUE, mouse);
 }
 
-// ──────────────────────────────────────────────────────────────
-//  Вспомогательные методы
-// ──────────────────────────────────────────────────────────────
 sf::Text FlashcardApp::txt(const char* s, unsigned sz, sf::Color c, float x, float y) {
     sf::Text t;
     t.setFont(font);
@@ -577,7 +554,6 @@ void FlashcardApp::addUtf8(char* buf, uint32_t code, int maxLen) {
     }
 }
 
-// Новая функция для правильного удаления многобайтовых символов
 void FlashcardApp::popUtf8(char* buf) {
     int l = std::strlen(buf);
     if (l == 0) return;
@@ -585,7 +561,6 @@ void FlashcardApp::popUtf8(char* buf) {
         l--;
         char c = buf[l];
         buf[l] = '\0';
-        // Если это стартовый байт или ASCII-символ, останавливаемся
         if ((c & 0xC0) != 0x80) break;
     }
 }
