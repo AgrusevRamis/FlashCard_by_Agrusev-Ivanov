@@ -17,10 +17,12 @@ class FlashcardApp {
     char wBuf[MWORD];
     char tBuf[MWORD];
     char fileBuf[512];
+    char answerBuf[MWORD];
     bool focusW;
     bool cursor;
     bool flipped;
     bool fileError;
+    int  writeResult; // 0=none, 1=correct, -1=wrong
 
     int editIdx;
     int editListOffset;
@@ -33,7 +35,9 @@ class FlashcardApp {
     void drawFileScreen(sf::Vector2i mouse);
     void drawAddScreen(sf::Vector2i mouse);
     void drawEditScreen(sf::Vector2i mouse);
+    void drawModeScreen(sf::Vector2i mouse);
     void drawTestScreen(sf::Vector2i mouse);
+    void drawWriteScreen(sf::Vector2i mouse);
     void drawResultScreen(sf::Vector2i mouse);
 
     sf::Text txt(const char* s, unsigned sz, sf::Color c, float x, float y);

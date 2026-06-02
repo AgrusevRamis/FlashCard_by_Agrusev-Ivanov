@@ -16,7 +16,8 @@ FlashcardApp::FlashcardApp()
     std::srand(static_cast<unsigned>(std::time(nullptr)));
     win.setFramerateLimit(60);
 
-    wBuf[0] = tBuf[0] = fileBuf[0] = '\0';
+    wBuf[0] = tBuf[0] = fileBuf[0] = answerBuf[0] = '\0';
+    writeResult = 0;
 
     BG     = sf::Color(20,  22,  35);
     CARD   = sf::Color(35,  40,  70);
@@ -114,7 +115,7 @@ void FlashcardApp::processEvents() {
                     for (int i = 0; i < cardN; i++) deck[i] = cards[i];
                     deckN = cardN; deckI = 0; correct = 0; missedN = 0; flipped = false;
                     shuffle(deck, deckN);
-                    screen = TEST;
+                    screen = MODE_SELECT;
                 }
                 if (clicked(e, 420, 320, 180, 50)) {
                     editIdx = -1;
@@ -124,13 +125,18 @@ void FlashcardApp::processEvents() {
             }
         }
 
-        else if (screen == FILE_LOAD) {
-            if (clicked(e, 50, 30, 120, 40)) {
-                fileError = false;
-                screen = MENU;
+        else if (screen == MODE_SELECT) {
+            if (clicked(e, 50, 30, 120, 40)) screen = MENU;
+            if (clicked(e, 200, 260, 180, 60)) screen = TEST;
+            if (clicked(e, 420, 260, 180, 60)) {
+                answerBuf[0] = '\0';
+                writeResult = 0;
+                screen = WRITE_TEST;
             }
+        }
 
-            if (clicked(e, 270, 330, 260, 50)) {
+        else if (screen == FILE_LOAD) {
+                 if (clicked(e, 270, 330, 260, 50)) {
                 if (fileBuf[0]) {
                     if (loadFromFile(fileBuf)) {
                         fileError = false;
@@ -242,6 +248,42 @@ void FlashcardApp::processEvents() {
             }
         }
 
+        else if (screen == WRITE_TEST) {
+            if (clicked(e, 50, 30, 120, 40)) screen = MENU;
+
+            if (writeResult == 0) {
+                // ввод ответа
+                if (e.type == sf::Event::TextEntered) {
+                    uint32_t c = e.text.unicode;
+                    if (c == 8 || c == 127) popUtf8(answerBuf);
+                    else if (c == '\r' || c == '\n') {
+                        // проверяем
+                        // сравниваем без учёта регистра для ASCII
+                        char ans[MWORD], cor[MWORD];
+                        std::strncpy(ans, answerBuf, MWORD);
+                        std::strncpy(cor, deck[deckI].t, MWORD);
+                        for (int i = 0; ans[i]; i++) if (ans[i]>='A'&&ans[i]<='Z') ans[i]+=32;
+                        for (int i = 0; cor[i]; i++) if (cor[i]>='A'&&cor[i]<='Z') cor[i]+=32;
+                        if (std::strcmp(ans, cor) == 0) {
+                            correct++;
+                            writeResult = 1;
+                        } else {
+                            missed[missedN++] = deck[deckI];
+                            writeResult = -1;
+                        }
+                    }
+                    else if (c >= 32) addUtf8(answerBuf, c, MWORD);
+                }
+            } else {
+                // показываем результат, ждём клика "Далее"
+                if (clicked(e, 300, 430, 200, 50)) {
+                    deckI++;
+                    if (deckI >= deckN) screen = RESULT;
+                    else { answerBuf[0] = '\0'; writeResult = 0; }
+                }
+            }
+        }
+
         else if (screen == TEST) {
             if (clicked(e, 50, 30, 120, 40)) screen = MENU;
             if (!flipped && clicked(e, 300, 460, 200, 50)) flipped = true;
@@ -263,7 +305,7 @@ void FlashcardApp::processEvents() {
                 for (int i = 0; i < cardN; i++) deck[i] = cards[i];
                 deckN = cardN; deckI = 0; correct = 0; missedN = 0; flipped = false;
                 shuffle(deck, deckN);
-                screen = TEST;
+                screen = MODE_SELECT;
             }
         }
     }
@@ -273,12 +315,14 @@ void FlashcardApp::render() {
     win.clear(BG);
     auto mouse = sf::Mouse::getPosition(win);
     switch (screen) {
-        case MENU:      drawMenuScreen(mouse);   break;
-        case FILE_LOAD: drawFileScreen(mouse);   break;
-        case ADD:       drawAddScreen(mouse);    break;
-        case EDIT_LIST: drawEditScreen(mouse);   break;
-        case TEST:      drawTestScreen(mouse);   break;
-        case RESULT:    drawResultScreen(mouse); break;
+        case MENU:        drawMenuScreen(mouse);   break;
+        case FILE_LOAD:   drawFileScreen(mouse);   break;
+        case ADD:         drawAddScreen(mouse);    break;
+        case EDIT_LIST:   drawEditScreen(mouse);   break;
+        case MODE_SELECT: drawModeScreen(mouse);   break;
+        case TEST:        drawTestScreen(mouse);   break;
+        case WRITE_TEST:  drawWriteScreen(mouse);  break;
+        case RESULT:      drawResultScreen(mouse); break;
     }
     win.display();
 }
@@ -307,11 +351,60 @@ void FlashcardApp::drawMenuScreen(sf::Vector2i mouse) {
     }
 }
 
+void FlashcardApp::drawModeScreen(sf::Vector2i mouse) {
+    drawBtn("< Назад", 50, 30, 120, 40, GRAY, mouse);
+    drawCentered("Выберите режим", 38, ACCENT, 80);
+    drawCentered("Как вы хотите проверить себя?", 18, MUTED, 150);
+
+    drawBtn("Устный",    200, 260, 180, 60, BLUE,  mouse);
+    drawBtn("Письменный", 420, 260, 180, 60, GREEN, mouse);
+
+    win.draw(txt("Видите перевод — вспоминаете слово.", 15, MUTED, 130, 360));
+    win.draw(txt("Видите слово — пишете перевод.", 15, MUTED, 420, 360));
+}
+
+void FlashcardApp::drawWriteScreen(sf::Vector2i mouse) {
+    drawBtn("< Назад", 50, 30, 120, 40, GRAY, mouse);
+
+    drawRect(100, 75, 600, 8, sf::Color(50, 55, 90));
+    float filled = deckN > 0 ? (float)deckI / deckN * 600.f : 0.f;
+    drawRect(100, 75, filled, 8, ACCENT);
+    char pb[32];
+    std::snprintf(pb, 32, "%d / %d", deckI + 1, deckN);
+    drawCentered(pb, 18, MUTED, 90);
+
+    // карточка — показываем слово
+    drawRect(150, 130, 500, 120, CARD, sf::Color(80, 100, 180));
+    drawCentered("СЛОВО", 14, ACCENT, 148);
+    drawCentered(deck[deckI].w, 32, TXT, 175);
+
+    if (writeResult == 0) {
+        // поле ввода
+        win.draw(txt("Введите перевод:", 18, MUTED, 170, 280));
+        drawRect(170, 305, 460, 50, sf::Color(30, 34, 55), ACCENT);
+        char show[MWORD + 2];
+        std::snprintf(show, sizeof(show), "%s|", answerBuf);
+        win.draw(txt(show, 22, TXT, 182, 315));
+        win.draw(txt("Нажмите Enter для проверки", 14, MUTED, 270, 368));
+    } else {
+        // результат
+        bool ok = (writeResult == 1);
+        drawCentered(ok ? "Верно!" : "Неверно", 28, ok ? GREEN : RED, 290);
+
+        if (!ok) {
+            win.draw(txt("Правильный ответ:", 16, MUTED, 170, 330));
+            win.draw(txt(deck[deckI].t, 22, TXT, 170, 355));
+        }
+
+        drawBtn("Далее", 300, 430, 200, 50, BLUE, mouse);
+    }
+}
+
 void FlashcardApp::drawFileScreen(sf::Vector2i mouse) {
     drawBtn("< Назад", 50, 30, 120, 40, GRAY, mouse);
     drawCentered("Загрузить из файла", 34, ACCENT, 80);
 
-    win.draw(txt("Введите путь к файлу (.txt): (например, ../a1.txt)", 18, MUTED, 170, 170));
+    win.draw(txt("Введите путь к файлу (.txt):", 18, MUTED, 170, 170));
     win.draw(txt("Формат строк:  слово TAB перевод", 14, MUTED, 170, 196));
     win.draw(txt("               или:  слово;перевод", 14, MUTED, 170, 214));
 

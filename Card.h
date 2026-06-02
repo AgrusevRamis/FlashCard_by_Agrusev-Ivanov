@@ -10,4 +10,4 @@ struct Card {
     char t[MWORD];
 };
 
-enum Screen { MENU, FILE_LOAD, ADD, EDIT_LIST, TEST, RESULT };
+enum Screen { MENU, FILE_LOAD, ADD, EDIT_LIST, MODE_SELECT, TEST, WRITE_TEST, RESULT };
