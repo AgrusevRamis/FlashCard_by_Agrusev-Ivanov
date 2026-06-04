@@ -22,10 +22,9 @@ class FlashcardApp {
     bool cursor;
     bool flipped;
     bool fileError;
-    int  writeResult; 
-
-    int editIdx;
-    int editListOffset;
+    int  writeResult;
+    int  editIdx;
+    int  editListOffset;
 
     sf::Color BG, CARD, ACCENT, GREEN, RED, BLUE, GRAY, TXT, MUTED;
 
@@ -50,6 +49,7 @@ class FlashcardApp {
     void addUtf8(char* buf, uint32_t code, int maxLen);
     void popUtf8(char* buf);
     void shuffle(Card* a, int n);
+    void advanceWriteTest();          // переход к след. карточке в письменном тесте
 
     bool loadFromFile(const char* path);
     void saveToFile(const char* path);

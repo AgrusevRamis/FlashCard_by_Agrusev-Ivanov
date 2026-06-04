@@ -30,6 +30,29 @@ FlashcardApp::FlashcardApp()
     MUTED  = sf::Color(140, 150, 190);
 }
 
+static bool matchAnswer(const char* ans, const char* correct) {
+    char buf[MWORD];
+    std::strncpy(buf, correct, MWORD - 1);
+    buf[MWORD - 1] = '\0';
+
+    char* tok = std::strtok(buf, "/");
+    while (tok) {
+
+        while (*tok == ' ') tok++;
+        char* end = tok + std::strlen(tok) - 1;
+        while (end > tok && *end == ' ') { *end = '\0'; end--; }
+
+        if (std::strcmp(ans, tok) == 0) return true;
+        tok = std::strtok(nullptr, "/");
+    }
+    return false;
+}
+
+static void toLowerAscii(char* s) {
+    for (; *s; s++)
+        if (*s >= 'A' && *s <= 'Z') *s += 32;
+}
+
 bool FlashcardApp::initAndRun() {
 #ifdef _WIN32
     if (!font.loadFromFile("C:/Windows/Fonts/arial.ttf"))
@@ -90,6 +113,16 @@ void FlashcardApp::saveToFile(const char* path) {
     std::fclose(f);
 }
 
+void FlashcardApp::advanceWriteTest() {
+    deckI++;
+    if (deckI >= deckN) {
+        screen = RESULT;
+    } else {
+        answerBuf[0] = '\0';
+        writeResult = 0;
+    }
+}
+
 void FlashcardApp::processEvents() {
     sf::Event e;
     while (win.pollEvent(e)) {
@@ -137,37 +170,22 @@ void FlashcardApp::processEvents() {
 
         else if (screen == FILE_LOAD) {
             if (clicked(e, 50, 30, 120, 40)) screen = MENU;
-                if (clicked(e, 270, 330, 260, 50)) {
+            if (clicked(e, 270, 330, 260, 50)) {
                 if (fileBuf[0]) {
-                    if (loadFromFile(fileBuf)) {
-                        fileError = false;
-                        screen = MENU;
-                    } else {
-                        fileError = true;
-                    }
+                    if (loadFromFile(fileBuf)) { fileError = false; screen = MENU; }
+                    else fileError = true;
                 }
             }
-
             if (e.type == sf::Event::TextEntered) {
                 uint32_t c = e.text.unicode;
-                if (c == 8 || c == 127) {
-                    popUtf8(fileBuf);
-                    fileError = false;
-                }
+                if (c == 8 || c == 127) { popUtf8(fileBuf); fileError = false; }
                 else if (c == '\r' || c == '\n') {
                     if (fileBuf[0]) {
-                        if (loadFromFile(fileBuf)) {
-                            fileError = false;
-                            screen = MENU;
-                        } else {
-                            fileError = true;
-                        }
+                        if (loadFromFile(fileBuf)) { fileError = false; screen = MENU; }
+                        else fileError = true;
                     }
                 }
-                else if (c >= 32) {
-                    addUtf8(fileBuf, c, 510);
-                    fileError = false;
-                }
+                else if (c >= 32) { addUtf8(fileBuf, c, 510); fileError = false; }
             }
         }
 
@@ -184,7 +202,6 @@ void FlashcardApp::processEvents() {
             }
             if (clicked(e, 170, 210, 460, 50)) focusW = true;
             if (clicked(e, 170, 310, 460, 50)) focusW = false;
-
             if (e.type == sf::Event::TextEntered) {
                 char* buf = focusW ? wBuf : tBuf;
                 uint32_t c = e.text.unicode;
@@ -201,6 +218,7 @@ void FlashcardApp::processEvents() {
             }
 
             if (editIdx < 0) {
+
                 const int ROWS = 8;
                 const float rowH = 44.f;
                 const float listY = 100.f;
@@ -228,9 +246,9 @@ void FlashcardApp::processEvents() {
                     editListOffset += ROWS;
             }
             else {
+
                 if (clicked(e, 170, 210, 460, 50)) focusW = true;
                 if (clicked(e, 170, 310, 460, 50)) focusW = false;
-
                 if (clicked(e, 270, 400, 260, 50)) {
                     if (wBuf[0] && tBuf[0]) {
                         std::strncpy(cards[editIdx].w, wBuf, MWORD);
@@ -238,7 +256,6 @@ void FlashcardApp::processEvents() {
                         editIdx = -1;
                     }
                 }
-
                 if (e.type == sf::Event::TextEntered) {
                     char* buf = focusW ? wBuf : tBuf;
                     uint32_t c = e.text.unicode;
@@ -250,39 +267,50 @@ void FlashcardApp::processEvents() {
         }
 
         else if (screen == WRITE_TEST) {
-            if (clicked(e, 50, 30, 120, 40)) screen = MENU;
 
-            if (writeResult == 0) {
-                if (e.type == sf::Event::TextEntered) {
-                    uint32_t c = e.text.unicode;
-                    if (c == 8 || c == 127) popUtf8(answerBuf);
+            if (clicked(e, 50, 30, 120, 40)) screen = RESULT;
+
+            if (writeResult != 0 && clicked(e, 300, 430, 200, 50)) {
+                advanceWriteTest();
+            }
+
+            if (e.type == sf::Event::TextEntered) {
+                uint32_t c = e.text.unicode;
+
+                if (writeResult == 0) {
+
+                    if (c == 8 || c == 127) {
+                        popUtf8(answerBuf);
+                    }
                     else if (c == '\r' || c == '\n') {
+
                         char ans[MWORD], cor[MWORD];
                         std::strncpy(ans, answerBuf, MWORD);
                         std::strncpy(cor, deck[deckI].t, MWORD);
-                        for (int i = 0; ans[i]; i++) if (ans[i]>='A'&&ans[i]<='Z') ans[i]+=32;
-                        for (int i = 0; cor[i]; i++) if (cor[i]>='A'&&cor[i]<='Z') cor[i]+=32;
-                        if (std::strcmp(ans, cor) == 0) {
-                            correct++;
-                            writeResult = 1;
-                        } else {
-                            missed[missedN++] = deck[deckI];
-                            writeResult = -1;
-                        }
+                        toLowerAscii(ans);
+                        toLowerAscii(cor);
+                        writeResult = matchAnswer(ans, cor) ? 1 : -1;
+                        if (writeResult == 1) correct++;
+                        else missed[missedN++] = deck[deckI];
+
                     }
-                    else if (c >= 32) addUtf8(answerBuf, c, MWORD);
+                    else if (c >= 32) {
+                        addUtf8(answerBuf, c, MWORD);
+                    }
                 }
-            } else {
-                if (clicked(e, 300, 430, 200, 50)) {
-                    deckI++;
-                    if (deckI >= deckN) screen = RESULT;
-                    else { answerBuf[0] = '\0'; writeResult = 0; }
+                else {
+
+                    if (c == '\r' || c == '\n') {
+                        advanceWriteTest();
+                    }
                 }
             }
         }
 
         else if (screen == TEST) {
-            if (clicked(e, 50, 30, 120, 40)) screen = MENU;
+
+            if (clicked(e, 50, 30, 120, 40)) screen = RESULT;
+
             if (!flipped && clicked(e, 300, 460, 200, 50)) flipped = true;
             if (flipped) {
                 bool act = false;
@@ -353,44 +381,62 @@ void FlashcardApp::drawModeScreen(sf::Vector2i mouse) {
     drawCentered("Выберите режим", 38, ACCENT, 80);
     drawCentered("Как вы хотите проверить себя?", 18, MUTED, 150);
 
-    drawBtn("Устный",    200, 260, 180, 60, BLUE,  mouse);
+    drawBtn("Устный",     200, 260, 180, 60, BLUE,  mouse);
     drawBtn("Письменный", 420, 260, 180, 60, GREEN, mouse);
 
-    win.draw(txt("Видите перевод — вспоминаете слово.", 15, MUTED, 130, 360));
-    win.draw(txt("Видите слово — пишете перевод.", 15, MUTED, 420, 360));
+    win.draw(txt("Видите перевод - вспоминаете слово.", 15, MUTED, 130, 360));
+    win.draw(txt("Видите слово - пишете перевод.",      15, MUTED, 420, 360));
 }
 
 void FlashcardApp::drawWriteScreen(sf::Vector2i mouse) {
-    drawBtn("< Назад", 50, 30, 120, 40, GRAY, mouse);
 
-    drawRect(100, 75, 600, 8, sf::Color(50, 55, 90));
-    float filled = deckN > 0 ? (float)deckI / deckN * 600.f : 0.f;
-    drawRect(100, 75, filled, 8, ACCENT);
+    drawBtn("Завершить", 50, 30, 130, 40, RED, mouse);
+
+    drawRect(200, 38, 550, 8, sf::Color(50, 55, 90));
+    float filled = deckN > 0 ? (float)deckI / deckN * 550.f : 0.f;
+    drawRect(200, 38, filled, 8, ACCENT);
     char pb[32];
     std::snprintf(pb, 32, "%d / %d", deckI + 1, deckN);
-    drawCentered(pb, 18, MUTED, 90);
+    drawCentered(pb, 16, MUTED, 52);
 
-    drawRect(150, 130, 500, 120, CARD, sf::Color(80, 100, 180));
-    drawCentered("СЛОВО", 14, ACCENT, 148);
-    drawCentered(deck[deckI].w, 32, TXT, 175);
+    drawRect(150, 100, 500, 100, CARD, sf::Color(80, 100, 180));
+    drawCentered("СЛОВО", 13, ACCENT, 114);
+    drawCentered(deck[deckI].w, 32, TXT, 138);
 
     if (writeResult == 0) {
-        win.draw(txt("Введите перевод:", 18, MUTED, 170, 280));
-        drawRect(170, 305, 460, 50, sf::Color(30, 34, 55), ACCENT);
+
+        win.draw(txt("Введите перевод:", 18, MUTED, 170, 230));
+        drawRect(170, 255, 460, 50, sf::Color(30, 34, 55), ACCENT);
         char show[MWORD + 2];
         std::snprintf(show, sizeof(show), "%s|", answerBuf);
-        win.draw(txt(show, 22, TXT, 182, 315));
-        win.draw(txt("Нажмите Enter для проверки", 14, MUTED, 270, 368));
-    } else {
+        win.draw(txt(show, 22, TXT, 182, 265));
+        win.draw(txt("Нажмите Enter для проверки", 14, MUTED, 270, 318));
+
+        int variants = 1;
+        for (const char* p = deck[deckI].t; *p; p++)
+            if (*p == '/') variants++;
+        if (variants > 1) {
+            char hint[48];
+            std::snprintf(hint, 48, "Вариантов ответа: %d (любой верный)", variants);
+            win.draw(txt(hint, 13, MUTED, 170, 345));
+        }
+    }
+    else {
         bool ok = (writeResult == 1);
-        drawCentered(ok ? "Верно!" : "Неверно", 28, ok ? GREEN : RED, 290);
+
+        win.draw(txt("Ваш ответ:", 16, MUTED, 170, 235));
+        win.draw(txt(answerBuf, 20, ok ? GREEN : RED, 170, 258));
+
+        drawCentered(ok ? "Верно!" : "Неверно", 30, ok ? GREEN : RED, 295);
 
         if (!ok) {
-            win.draw(txt("Правильный ответ:", 16, MUTED, 170, 330));
-            win.draw(txt(deck[deckI].t, 22, TXT, 170, 355));
+            win.draw(txt("Правильный ответ:", 16, MUTED, 170, 342));
+
+            win.draw(txt(deck[deckI].t, 20, TXT, 170, 366));
         }
 
-        drawBtn("Далее", 300, 430, 200, 50, BLUE, mouse);
+        drawBtn("Далее  →", 300, 430, 200, 50, BLUE, mouse);
+        win.draw(txt("(или нажмите Enter)", 13, MUTED, 355, 490));
     }
 }
 
@@ -408,10 +454,9 @@ void FlashcardApp::drawFileScreen(sf::Vector2i mouse) {
     win.draw(txt(show, 20, TXT, 182, 252));
 
     drawBtn("Загрузить", 270, 330, 260, 50, BLUE, mouse);
-    win.draw(txt("(Enter — тоже подтверждает)", 14, MUTED, 270, 392));
-    if (fileError) {
+    win.draw(txt("(Enter - тоже подтверждает)", 14, MUTED, 270, 392));
+    if (fileError)
         drawCentered("Файл не найден! Проверьте путь.", 16, RED, 440);
-    }
 }
 
 void FlashcardApp::drawAddScreen(sf::Vector2i mouse) {
@@ -444,7 +489,7 @@ void FlashcardApp::drawAddScreen(sf::Vector2i mouse) {
     int n = cardN < 3 ? cardN : 3;
     for (int i = 0; i < n; i++) {
         char line[MWORD * 2 + 8];
-        std::snprintf(line, sizeof(line), "%d. %s -> %s",
+        std::snprintf(line, sizeof(line), "%d. %s → %s",
                       cardN - i, cards[cardN-1-i].w, cards[cardN-1-i].t);
         win.draw(txt(line, 14, MUTED, 170, 494 + i * 20.f));
     }
@@ -455,8 +500,8 @@ void FlashcardApp::drawEditScreen(sf::Vector2i mouse) {
         drawBtn("< Назад", 50, 30, 120, 40, GRAY, mouse);
         drawCentered("Редактировать карточки", 28, ACCENT, 55);
 
-        const int ROWS  = 8;
-        const float rowH = 44.f;
+        const int   ROWS  = 8;
+        const float rowH  = 44.f;
         const float listY = 100.f;
 
         for (int i = 0; i < ROWS; i++) {
@@ -471,12 +516,10 @@ void FlashcardApp::drawEditScreen(sf::Vector2i mouse) {
             char line[MWORD * 2 + 8];
             std::snprintf(line, sizeof(line), "%d.  %s  →  %s",
                           ci + 1, cards[ci].w, cards[ci].t);
-            win.draw(txt(line, 15, TXT, 90, ry + 12));
+            win.draw(txt(line, 14, TXT, 90, ry + 13));
 
-            drawBtn("Изм.", 560, ry + 6, 70, 30,
-                    sf::Color(60, 80, 180), mouse);
-            drawBtn("Удал.", 638, ry + 6, 70, 30,
-                    sf::Color(160, 50, 50), mouse);
+            drawBtn("Изм.",  560, ry + 6, 70, 30, sf::Color(60, 80, 180),  mouse);
+            drawBtn("Удал.", 638, ry + 6, 70, 30, sf::Color(160, 50, 50),  mouse);
         }
 
         if (editListOffset > 0)
@@ -485,9 +528,9 @@ void FlashcardApp::drawEditScreen(sf::Vector2i mouse) {
             drawBtn("След. >", 420, 470, 80, 35, GRAY, mouse);
 
         char pg[32];
-        std::snprintf(pg, 32, "%d - %d из %d",
+        std::snprintf(pg, 32, "%d-%d из %d",
                       editListOffset + 1,
-                      (editListOffset + ROWS < cardN ? editListOffset + ROWS : cardN),
+                      std::min(editListOffset + ROWS, cardN),
                       cardN);
         drawCentered(pg, 14, MUTED, 512);
     }
@@ -496,6 +539,9 @@ void FlashcardApp::drawEditScreen(sf::Vector2i mouse) {
         char title[32];
         std::snprintf(title, 32, "Карточка %d", editIdx + 1);
         drawCentered(title, 28, ACCENT, 80);
+
+        win.draw(txt("Можно несколько вариантов через  /  (напр: его / ему)",
+                     13, MUTED, 170, 163));
 
         auto fieldBg = [&](float y, bool focus) {
             drawRect(170, y, 460, 50, sf::Color(30, 34, 55),
@@ -520,36 +566,37 @@ void FlashcardApp::drawEditScreen(sf::Vector2i mouse) {
 }
 
 void FlashcardApp::drawTestScreen(sf::Vector2i mouse) {
-    drawBtn("< Назад", 50, 30, 120, 40, GRAY, mouse);
+    drawBtn("Завершить", 50, 30, 130, 40, RED, mouse);
 
-    drawRect(100, 75, 600, 8, sf::Color(50, 55, 90));
-    float filled = deckN > 0 ? (float)deckI / deckN * 600.f : 0.f;
-    drawRect(100, 75, filled, 8, ACCENT);
+    drawRect(200, 38, 550, 8, sf::Color(50, 55, 90));
+    float filled = deckN > 0 ? (float)deckI / deckN * 550.f : 0.f;
+    drawRect(200, 38, filled, 8, ACCENT);
     char pb[32];
     std::snprintf(pb, 32, "%d / %d", deckI + 1, deckN);
-    drawCentered(pb, 18, MUTED, 90);
+    drawCentered(pb, 16, MUTED, 52);
 
-    const float cx = 150, cy = 150, cw = 500, ch = 260;
+    const float cx = 150, cy = 130, cw = 500, ch = 240;
     drawRect(cx, cy, cw, ch,
              flipped ? sf::Color(40, 65, 55) : CARD,
              flipped ? GREEN : sf::Color(80, 100, 180));
-    drawCentered(flipped ? "СЛОВО" : "ПЕРЕВОД", 14,
-                 flipped ? GREEN : ACCENT, cy + 20);
-    drawCentered(flipped ? deck[deckI].w : deck[deckI].t, 32, TXT, cy + 95);
+    drawCentered(flipped ? "СЛОВО" : "ПЕРЕВОД", 13,
+                 flipped ? GREEN : ACCENT, cy + 18);
+    drawCentered(flipped ? deck[deckI].w : deck[deckI].t, 30, TXT, cy + 90);
 
     if (!flipped)
-        drawBtn("Перевернуть", 300, 460, 200, 50, BLUE, mouse);
+        drawBtn("Перевернуть", 300, 430, 200, 50, BLUE, mouse);
     else {
-        drawBtn("Не знал", 100, 460, 160, 50, RED,   mouse);
-        drawBtn("Знал!",   540, 460, 160, 50, GREEN, mouse);
+        drawBtn("Не знал", 100, 430, 160, 50, RED,   mouse);
+        drawBtn("Знал!",   540, 430, 160, 50, GREEN, mouse);
     }
 }
 
 void FlashcardApp::drawResultScreen(sf::Vector2i mouse) {
     drawCentered("Результат", 42, ACCENT, 60);
-    int pct = deckN > 0 ? correct * 100 / deckN : 0;
+    int answered = deckI;
+    int pct = answered > 0 ? correct * 100 / answered : 0;
     char sb[32];
-    std::snprintf(sb, 32, "%d / %d", correct, deckN);
+    std::snprintf(sb, 32, "%d / %d", correct, answered);
     drawCentered(sb, 52, pct >= 70 ? GREEN : RED, 130);
     char pb[16];
     std::snprintf(pb, 16, "(%d%%)", pct);
@@ -565,12 +612,12 @@ void FlashcardApp::drawResultScreen(sf::Vector2i mouse) {
         int n = missedN < 5 ? missedN : 5;
         for (int i = 0; i < n; i++) {
             char line[MWORD * 2 + 4];
-            std::snprintf(line, sizeof(line), "%s -> %s",
+            std::snprintf(line, sizeof(line), "%s → %s",
                           missed[i].w, missed[i].t);
-            win.draw(txt(line, 15, MUTED, 100, 310 + i * 22.f));
+            win.draw(txt(line, 15, MUTED, 100, 312 + i * 22.f));
         }
     }
-    drawBtn("В меню",  190, 460, 180, 50, GRAY,  mouse);
+    drawBtn("В меню",  190, 460, 180, 50, GRAY, mouse);
     drawBtn("Ещё раз", 430, 460, 180, 50, BLUE, mouse);
 }
 
@@ -614,9 +661,9 @@ void FlashcardApp::drawBtn(const char* s, float x, float y, float w, float h,
     bool hov = mouse.x >= x && mouse.x <= x + w
             && mouse.y >= y && mouse.y <= y + h;
     drawRect(x, y, w, h,
-             hov ? sf::Color(std::min(255, fill.r + 30),
-                             std::min(255, fill.g + 30),
-                             std::min(255, fill.b + 30))
+             hov ? sf::Color(std::min(255, (int)fill.r + 30),
+                             std::min(255, (int)fill.g + 30),
+                             std::min(255, (int)fill.b + 30))
                  : fill);
     auto t = txt(s, 18, sf::Color::White, 0, 0);
     auto b = t.getLocalBounds();
