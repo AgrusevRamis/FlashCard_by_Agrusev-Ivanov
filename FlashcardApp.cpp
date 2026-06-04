@@ -257,8 +257,6 @@ void FlashcardApp::processEvents() {
                     uint32_t c = e.text.unicode;
                     if (c == 8 || c == 127) popUtf8(answerBuf);
                     else if (c == '\r' || c == '\n') {
-                        // проверяем
-                        // сравниваем без учёта регистра для ASCII
                         char ans[MWORD], cor[MWORD];
                         std::strncpy(ans, answerBuf, MWORD);
                         std::strncpy(cor, deck[deckI].t, MWORD);
