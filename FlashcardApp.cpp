@@ -268,7 +268,7 @@ void FlashcardApp::processEvents() {
 
         else if (screen == WRITE_TEST) {
 
-            if (clicked(e, 50, 30, 120, 40)) screen = RESULT;
+            if (clicked(e, 50, 30, 130, 40)) screen = RESULT;
 
             if (writeResult != 0 && clicked(e, 300, 430, 200, 50)) {
                 advanceWriteTest();
@@ -309,7 +309,7 @@ void FlashcardApp::processEvents() {
 
         else if (screen == TEST) {
 
-            if (clicked(e, 50, 30, 120, 40)) screen = RESULT;
+            if (clicked(e, 50, 30, 130, 40)) screen = RESULT;
 
             if (!flipped && clicked(e, 300, 460, 200, 50)) flipped = true;
             if (flipped) {
@@ -575,7 +575,7 @@ void FlashcardApp::drawTestScreen(sf::Vector2i mouse) {
     std::snprintf(pb, 32, "%d / %d", deckI + 1, deckN);
     drawCentered(pb, 16, MUTED, 52);
 
-    const float cx = 150, cy = 130, cw = 500, ch = 240;
+    const float cx = 150, cy = 100, cw = 500, ch = 300;
     drawRect(cx, cy, cw, ch,
              flipped ? sf::Color(40, 65, 55) : CARD,
              flipped ? GREEN : sf::Color(80, 100, 180));
@@ -584,10 +584,10 @@ void FlashcardApp::drawTestScreen(sf::Vector2i mouse) {
     drawCentered(flipped ? deck[deckI].w : deck[deckI].t, 30, TXT, cy + 90);
 
     if (!flipped)
-        drawBtn("Перевернуть", 300, 430, 200, 50, BLUE, mouse);
+        drawBtn("Перевернуть", 300, 460, 200, 50, BLUE, mouse);
     else {
-        drawBtn("Не знал", 100, 430, 160, 50, RED,   mouse);
-        drawBtn("Знал!",   540, 430, 160, 50, GREEN, mouse);
+        drawBtn("Не знал", 100, 460, 160, 50, RED,   mouse);
+        drawBtn("Знал!",   540, 460, 160, 50, GREEN, mouse);
     }
 }
 
