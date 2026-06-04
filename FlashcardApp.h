@@ -22,7 +22,7 @@ class FlashcardApp {
     bool cursor;
     bool flipped;
     bool fileError;
-    int  writeResult; // 0=none, 1=correct, -1=wrong
+    int  writeResult; 
 
     int editIdx;
     int editListOffset;

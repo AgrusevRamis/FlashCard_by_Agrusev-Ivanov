@@ -136,7 +136,7 @@ void FlashcardApp::processEvents() {
         }
 
         else if (screen == FILE_LOAD) {
-                 if (clicked(e, 270, 330, 260, 50)) {
+                if (clicked(e, 270, 330, 260, 50)) {
                 if (fileBuf[0]) {
                     if (loadFromFile(fileBuf)) {
                         fileError = false;
@@ -252,13 +252,10 @@ void FlashcardApp::processEvents() {
             if (clicked(e, 50, 30, 120, 40)) screen = MENU;
 
             if (writeResult == 0) {
-                // ввод ответа
                 if (e.type == sf::Event::TextEntered) {
                     uint32_t c = e.text.unicode;
                     if (c == 8 || c == 127) popUtf8(answerBuf);
                     else if (c == '\r' || c == '\n') {
-                        // проверяем
-                        // сравниваем без учёта регистра для ASCII
                         char ans[MWORD], cor[MWORD];
                         std::strncpy(ans, answerBuf, MWORD);
                         std::strncpy(cor, deck[deckI].t, MWORD);
@@ -275,7 +272,6 @@ void FlashcardApp::processEvents() {
                     else if (c >= 32) addUtf8(answerBuf, c, MWORD);
                 }
             } else {
-                // показываем результат, ждём клика "Далее"
                 if (clicked(e, 300, 430, 200, 50)) {
                     deckI++;
                     if (deckI >= deckN) screen = RESULT;
