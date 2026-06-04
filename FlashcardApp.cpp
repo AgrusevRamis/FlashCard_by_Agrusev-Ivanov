@@ -136,6 +136,7 @@ void FlashcardApp::processEvents() {
         }
 
         else if (screen == FILE_LOAD) {
+            if (clicked(e, 50, 30, 120, 40)) screen = MENU;
                 if (clicked(e, 270, 330, 260, 50)) {
                 if (fileBuf[0]) {
                     if (loadFromFile(fileBuf)) {
@@ -369,13 +370,11 @@ void FlashcardApp::drawWriteScreen(sf::Vector2i mouse) {
     std::snprintf(pb, 32, "%d / %d", deckI + 1, deckN);
     drawCentered(pb, 18, MUTED, 90);
 
-    // карточка — показываем слово
     drawRect(150, 130, 500, 120, CARD, sf::Color(80, 100, 180));
     drawCentered("СЛОВО", 14, ACCENT, 148);
     drawCentered(deck[deckI].w, 32, TXT, 175);
 
     if (writeResult == 0) {
-        // поле ввода
         win.draw(txt("Введите перевод:", 18, MUTED, 170, 280));
         drawRect(170, 305, 460, 50, sf::Color(30, 34, 55), ACCENT);
         char show[MWORD + 2];
@@ -383,7 +382,6 @@ void FlashcardApp::drawWriteScreen(sf::Vector2i mouse) {
         win.draw(txt(show, 22, TXT, 182, 315));
         win.draw(txt("Нажмите Enter для проверки", 14, MUTED, 270, 368));
     } else {
-        // результат
         bool ok = (writeResult == 1);
         drawCentered(ok ? "Верно!" : "Неверно", 28, ok ? GREEN : RED, 290);
 
